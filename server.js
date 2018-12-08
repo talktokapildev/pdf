@@ -19,8 +19,25 @@ app.listen(3200, () => {
   console.log('Server started!');
 });
 
-
-
+app.route('/api/cats').get((req, res) => {
+    res.send({
+      cats: [{ name: 'lilly' }, { name: 'lucy' }]
+    });
+  });
+  
+  
+  app.get('/api/getPdf', (req, res) => {
+  //app.route('/api/getPdf').post((req, res) => {
+      (async () => {
+          const browser = await puppeteer.launch()
+          const page = await browser.newPage()
+          await page.goto('https://google.com')
+          const buffer = await page.pdf({format: 'A4'})
+          res.type('application/pdf')
+          res.send(buffer)
+          browser.close()
+      })()
+  })
 app.route('/api/pdfContent').post((req, res) => {
 
 
